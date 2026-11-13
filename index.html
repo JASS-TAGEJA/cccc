@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chandni Chowk Cheese Café | Good Vibes, Great Food, Great Times</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+          },
+          colors: {
+            cccRed: '#EF4444',
+            cccGreen: '#22C55E',
+            cccBlue: '#3B82F6',
+            cccYellow: '#EAB308',
+            cccGold: '#c5a880',
+            darkBg: '#0b0908',
+            cardBg: '#14100e',
+          },
+          animation: {
+            'spin-slow': 'spin 22s linear infinite',
+            'float-slow': 'floatSlow 8s ease-in-out infinite',
+            'pulse-glow': 'pulseGlow 5s ease-in-out infinite',
+          },
+          keyframes: {
+            floatSlow: {
+              '0%, 100%': { transform: 'translate(0px, 0px) scale(1)' },
+              '50%': { transform: 'translate(20px, -25px) scale(1.08)' },
+            },
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.45', transform: 'scale(1)' },
+              '50%': { opacity: '0.75', transform: 'scale(1.06)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #0b0908;
+      color: #ffffff;
+      margin: 0;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      /* Rich multi-color blend of the 4 logo colors: Red, Blue, Green, Yellow */
+      background-image: 
+        radial-gradient(at 5% 5%, rgba(239, 68, 68, 0.35) 0px, transparent 48%),
+        radial-gradient(at 95% 8%, rgba(59, 130, 246, 0.35) 0px, transparent 48%),
+        radial-gradient(at 8% 92%, rgba(34, 197, 94, 0.32) 0px, transparent 48%),
+        radial-gradient(at 92% 90%, rgba(234, 179, 8, 0.36) 0px, transparent 48%),
+        radial-gradient(at 50% 50%, rgba(239, 68, 68, 0.15) 0px, transparent 65%);
+      background-attachment: fixed;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .tilt-card {
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
+      transform-style: preserve-3d;
+    }
+    .tilt-card:hover {
+      transform: translateY(-8px) scale(1.02);
+    }
+    .aurora-blur {
+      filter: blur(120px);
+      mix-blend-mode: screen;
+    }
+  </style>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <!-- Ambient 4-Color Floating Light Orbs -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+    <div class="absolute -top-[12%] -left-[10%] w-[680px] h-[680px] rounded-full bg-red-600/30 aurora-blur animate-pulse-glow" style="animation-duration: 7s;"></div>
+    <div class="absolute top-[2%] -right-[10%] w-[720px] h-[720px] rounded-full bg-blue-600/32 aurora-blur animate-pulse-glow" style="animation-duration: 9s; animation-delay: 2s;"></div>
+    <div class="absolute -bottom-[10%] left-[2%] w-[640px] h-[640px] rounded-full bg-emerald-500/28 aurora-blur animate-pulse-glow" style="animation-duration: 8s; animation-delay: 1s;"></div>
+    <div class="absolute bottom-[5%] right-[5%] w-[650px] h-[650px] rounded-full bg-amber-400/32 aurora-blur animate-pulse-glow" style="animation-duration: 6s; animation-delay: 3s;"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full opacity-25 blur-[160px] animate-spin-slow pointer-events-none"
+         style="background: conic-gradient(from 0deg, #EF4444 0deg, #EAB308 90deg, #22C55E 180deg, #3B82F6 270deg, #EF4444 360deg);">
+    </div>
+  </div>
+
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useCallback, useRef } = React;
+
+    // Authentic 4-Circle CCC Logo Component
+    const CCCLogo = ({ className = "w-10 h-10", animated = false }) => (
+      <img
+        src="/public/images/logo-ccc.png"
+        alt="Chandni Chowk Cheese Café Official 4-Circle Logo"
+        className={`${className} object-contain shrink-0 ${
+          animated
+            ? "hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_22px_rgba(234,179,8,0.55)] cursor-pointer"
+            : "drop-shadow-[0_0_12px_rgba(255,255,255,0.25)]"
+        }`}
+      />
+    );
+
+    // Apple iOS Emoji Component
+    const IOSEmoji = ({ name, className = "w-4 h-4 inline-block align-middle", alt = "" }) => (
+      <img
+        src={`/public/images/emojis/${name}.png`}
+        alt={alt || name}
+        className={`${className} object-contain inline-block align-text-bottom select-none`}
+        loading="lazy"
+        draggable="false"
+      />
+    );
+
+    // Navigation and Action Icons
+    const ChevronLeft = ({ className = "w-5 h-5 text-white" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
+    );
+
+    const ChevronRight = ({ className = "w-5 h-5 text-white" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+    );
+
+    const ArrowRight = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+      </svg>
+    );
+
+    const MapPinIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+    );
+
+    const PhoneIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+      </svg>
+    );
+
+    const InstagramIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+      </svg>
+    );
+
+    const UtensilsIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+      </svg>
+    );
+
+    const CheckIcon = ({ className = "w-4 h-4 text-green-400" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+      </svg>
+    );
+
+    // 3D Coverflow Carousel Component
+    function CoverFlowCarousel({
+      items,
+      sectionLabel = "CHANDNI CHOWK CHEESE CAFÉ",
+      autoplay = true,
+      autoplayDelay = 4500,
+      className = "",
+      onCtaClick,
+    }) {
+      const [currentIndex, setCurrentIndex] = useState(0);
+      const [isHovered, setIsHovered] = useState(false);
+      const touchStartX = useRef(0);
+      const total = items ? items.length : 0;
+
+      const nextSlide = useCallback(() => {
+        if (total === 0) return;
+        setCurrentIndex((prev) => (prev + 1) % total);
+      }, [total]);
+
+      const prevSlide = useCallback(() => {
+        if (total === 0) return;
+        setCurrentIndex((prev) => (prev - 1 + total) % total);
+      }, [total]);
+
+      const goToSlide = (idx) => {
+        if (total === 0) return;
+        setCurrentIndex(idx % total);
+      };
+
+      useEffect(() => {
+        if (!autoplay || isHovered || total <= 1) return;
+        const interval = setInterval(nextSlide, autoplayDelay);
+        return () => clearInterval(interval);
+      }, [autoplay, autoplayDelay, isHovered, nextSlide, total]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === "ArrowLeft") prevSlide();
+          if (e.key === "ArrowRight") nextSlide();
+        };
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+      }, [nextSlide, prevSlide]);
+
+      const handleTouchStart = (e) => {
+        touchStartX.current = e.touches[0].clientX;
+      };
+
+      const handleTouchEnd = (e) => {
+        const diff = e.changedTouches[0].clientX - touchStartX.current;
+        if (Math.abs(diff) > 45) {
+          if (diff < 0) nextSlide();
+          else prevSlide();
+        }
+      };
+
+      if (!items || items.length === 0) return null;
+
+      return (
+        <section
+          className={`relative w-full min-h-[760px] flex items-center justify-center overflow-hidden py-12 select-none ${className}`}
+          style={{ backgroundColor: "transparent" }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* Background Ambience Glow */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+            <img
+              src={items[currentIndex]?.img}
+              alt="ambience background"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                filter: "brightness(0.18) blur(38px)",
+                transform: "scale(1.2)",
+                transition: "opacity 1000ms ease, filter 1000ms ease",
+              }}
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                background: "radial-gradient(circle at center, rgba(12,10,9,0.3) 0%, rgba(11,9,8,0.92) 100%)",
+              }}
+            />
+          </div>
+
+          <div className="relative w-full max-w-6xl mx-auto px-4 z-10 flex flex-col items-center">
+            {/* Eyebrow with 4 logo color dots */}
+            {sectionLabel && (
+              <div className="flex items-center gap-3 mb-8">
+                <span className="w-8 h-[2px] bg-gradient-to-r from-transparent to-red-500" />
+                <span className="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]" />
+                <h3 className="text-xs font-black tracking-[0.3em] uppercase text-amber-400 m-0">
+                  {sectionLabel}
+                </h3>
+                <span className="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-[0_0_10px_#3b82f6]" />
+                <span className="w-8 h-[2px] bg-gradient-to-l from-transparent to-amber-500" />
+              </div>
+            )}
+
+            {/* 3D Coverflow Stage */}
+            <div
+              className="relative w-full h-[520px] flex justify-center items-center mb-8"
+              style={{ perspective: "1400px" }}
+            >
+              {items.map((item, idx) => {
+                const offset = (idx - currentIndex + total) % total;
+
+                let transform = "translateX(0px) scale(0.4) rotateY(0deg)";
+                let opacity = 0;
+                let zIndex = 0;
+                let filter = "brightness(0.4) blur(2px)";
+                let isCenter = false;
+
+                if (offset === 0) {
+                  isCenter = true;
+                  transform = "translateX(0px) scale(1) rotateY(0deg)";
+                  opacity = 1;
+                  zIndex = 30;
+                  filter = "brightness(1)";
+                } else if (offset === 1) {
+                  transform = "translateX(285px) scale(0.84) rotateY(-24deg)";
+                  opacity = 0.65;
+                  zIndex = 20;
+                  filter = "brightness(0.75)";
+                } else if (offset === 2) {
+                  transform = "translateX(510px) scale(0.68) rotateY(-38deg)";
+                  opacity = 0.38;
+                  zIndex = 10;
+                  filter = "brightness(0.55) blur(1px)";
+                } else if (offset === total - 1) {
+                  transform = "translateX(-285px) scale(0.84) rotateY(24deg)";
+                  opacity = 0.65;
+                  zIndex = 20;
+                  filter = "brightness(0.75)";
+                } else if (offset === total - 2) {
+                  transform = "translateX(-510px) scale(0.68) rotateY(38deg)";
+                  opacity = 0.38;
+                  zIndex = 10;
+                  filter = "brightness(0.55) blur(1px)";
+                }
+
+                return (
+                  <div
+                    key={idx}
+                    onClick={() => !isCenter && goToSlide(idx)}
+                    style={{
+                      position: "absolute",
+                      width: "330px",
+                      height: "500px",
+                      borderRadius: "20px",
+                      overflow: "hidden",
+                      backgroundColor: "#161210",
+                      border: isCenter ? "2px solid rgba(234, 179, 8, 0.55)" : "1px solid rgba(255, 255, 255, 0.14)",
+                      transform,
+                      opacity,
+                      zIndex,
+                      filter,
+                      transformOrigin: "center center",
+                      transition: "all 800ms cubic-bezier(0.25, 1, 0.5, 1)",
+                      boxShadow: isCenter
+                        ? "0 25px 60px rgba(0,0,0,0.95), 0 0 45px rgba(234, 179, 8, 0.3)"
+                        : "0 15px 35px rgba(0,0,0,0.6)",
+                      cursor: isCenter ? "default" : "pointer",
+                    }}
+                  >
+                    {/* Dish Image */}
+                    <img
+                      src={item.img}
+                      alt={item.titleLine1}
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+
+                    {/* Dark Vignette Overlay */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        background:
+                          "linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.15) 25%, rgba(0,0,0,0.72) 60%, rgba(11,9,8,0.98) 100%)",
+                        pointerEvents: "none",
+                        zIndex: 10,
+                      }}
+                    />
+
+                    {/* Content Overlay */}
+                    <div
+                      style={{
+                        position: "relative",
+                        width: "100%",
+                        height: "100%",
+                        padding: "20px 18px 22px",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                        textAlign: "center",
+                        zIndex: 20,
+                        opacity: isCenter ? 1 : 0,
+                        transform: isCenter ? "translateY(0px)" : "translateY(16px)",
+                        transition: "opacity 500ms ease, transform 500ms ease",
+                        pointerEvents: isCenter ? "auto" : "none",
+                      }}
+                    >
+                      {/* Tag with Neon Badge */}
+                      <div className="text-right w-full pr-1">
+                        <span className="inline-block text-[11px] font-bold tracking-wider text-amber-300 bg-black/60 px-2.5 py-0.5 rounded-full border border-amber-400/30 shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+                          {item.tag}
+                        </span>
+                      </div>
+
+                      {/* Body Content */}
+                      <div className="flex flex-col items-center gap-1 mt-auto pb-1">
+                        <h2 className="text-2xl font-black uppercase tracking-tight text-white m-0 leading-tight drop-shadow-[0_3px_10px_rgba(0,0,0,0.95)]">
+                          {item.titleLine1}
+                        </h2>
+
+                        {item.titleLine2 && (
+                          <span className="text-sm font-bold uppercase tracking-wider text-amber-200/90 leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+                            {item.titleLine2}
+                          </span>
+                        )}
+
+                        <div className="w-10 h-0.5 bg-gradient-to-r from-red-500 via-amber-400 to-green-500 rounded-full my-1.5 shadow-[0_0_8px_rgba(234,179,8,0.7)]" />
+
+                        {item.desc && (
+                          <p className="text-xs italic text-stone-200 max-w-[280px] m-0 mb-3 leading-relaxed drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
+                            {item.desc}
+                          </p>
+                        )}
+
+                        <a
+                          href={item.ctaUrl || "#"}
+                          onClick={(e) => {
+                            if (onCtaClick) {
+                              e.preventDefault();
+                              onCtaClick(item);
+                            }
+                          }}
+                          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 text-stone-950 text-xs font-black tracking-widest uppercase no-underline shadow-[0_4px_16px_rgba(234,179,8,0.35)] hover:scale-105 transition-transform"
+                        >
+                          <span>{item.ctaText || "View Menu"}</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Navigation Arrows */}
+            <button
+              onClick={prevSlide}
+              aria-label="Previous dish"
+              className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/60 border border-white/20 text-white flex items-center justify-center backdrop-blur-md cursor-pointer shadow-[0_8px_24px_rgba(0,0,0,0.5)] z-40 hover:bg-amber-500 hover:text-black hover:border-amber-400 transition-all"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+
+            <button
+              onClick={nextSlide}
+              aria-label="Next dish"
+              className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/60 border border-white/20 text-white flex items-center justify-center backdrop-blur-md cursor-pointer shadow-[0_8px_24px_rgba(0,0,0,0.5)] z-40 hover:bg-amber-500 hover:text-black hover:border-amber-400 transition-all"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+
+            {/* Pagination Dots */}
+            <div className="flex items-center justify-center gap-2 z-30">
+              {items.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => goToSlide(idx)}
+                  aria-label={`Go to slide ${idx + 1}`}
+                  className={`h-2 rounded-full border-none cursor-pointer transition-all duration-300 ${
+                    idx === currentIndex
+                      ? "w-8 bg-amber-400 shadow-[0_0_12px_rgba(234,179,8,0.8)]"
+                      : "w-2 bg-white/25 hover:bg-white/50"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // Main App Component
+    function App() {
+      const [menuData, setMenuData] = useState(null);
+      const [selectedCategory, setSelectedCategory] = useState("All");
+      const [activeTab, setActiveTab] = useState("menu");
+      const [selectedPoster, setSelectedPoster] = useState(null);
+      const [openFaq, setOpenFaq] = useState(0);
+      const [bookingModal, setBookingModal] = useState({ open: false, service: "Birthday Celebrations" });
+
+      useEffect(() => {
+        fetch("/data/menu-data.json")
+          .then((res) => res.json())
+          .then((data) => setMenuData(data))
+          .catch((err) => console.error("Error loading menu data:", err));
+      }, []);
+
+      if (!menuData) {
+        return (
+          <div className="w-full min-h-screen bg-[#0b0908] flex flex-col items-center justify-center text-amber-400">
+            <CCCLogo className="w-24 h-24 animate-spin-slow mb-4" />
+            <p className="tracking-widest uppercase text-xs font-bold">Opening Chandni Chowk Cheese Café...</p>
+          </div>
+        );
+      }
+
+      const { cafeInfo, carouselDishes, categories, cateringServices, reviews, faqs } = menuData;
+      const allCategoryNames = ["All", ...categories.map((c) => c.categoryName)];
+      const filteredCategories =
+        selectedCategory === "All"
+          ? categories
+          : categories.filter((c) => c.categoryName === selectedCategory);
+
+      return (
+        <div className="w-full min-h-screen text-white relative">
+          {/* Top Announcement Bar with iOS Sparkles */}
+          <div className="w-full bg-[#161210]/95 backdrop-blur-md border-b border-white/10 text-center py-2 px-4 text-xs font-medium tracking-wide text-amber-300 flex items-center justify-center gap-2 sticky top-0 z-50">
+            <IOSEmoji name="sparkles" className="w-4 h-4" />
+            <span className="font-semibold">{cafeInfo.slogan}</span>
+            <span className="hidden md:inline text-white/30">•</span>
+            <span className="hidden md:inline text-stone-300 italic">Yamunanagar&apos;s 100% Vegetarian Food &amp; Vibes Hub</span>
+            <IOSEmoji name="sparkles" className="w-4 h-4" />
+          </div>
+
+          {/* Sticky Navigation Bar with 4-color top accent */}
+          <nav className="w-full bg-[#0b0908]/90 backdrop-blur-xl border-b border-white/10 sticky top-[37px] z-40 transition-all">
+            <div className="h-[2px] w-full bg-gradient-to-r from-red-500 via-amber-400 via-green-500 to-blue-500" />
+            
+            <div className="max-w-6xl mx-auto px-4 py-2.5 flex items-center justify-between gap-4">
+              {/* Brand Logo & Name */}
+              <div 
+                className="flex items-center gap-3 cursor-pointer group"
+                onClick={() => { setActiveTab("menu"); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              >
+                <CCCLogo className="w-10 h-10 sm:w-11 sm:h-11 group-hover:scale-105 transition-transform" />
+                <div className="text-left">
+                  <div className="text-xs uppercase font-extrabold tracking-widest text-amber-400 flex items-center gap-1.5">
+                    Chandni Chowk <span className="text-red-500 bg-red-500/10 px-1 rounded text-[10px] border border-red-500/30">चीज़</span>
+                  </div>
+                  <div className="text-lg font-black tracking-tighter text-white leading-none">
+                    CHEESE CAFÉ
+                  </div>
+                </div>
+              </div>
+
+              {/* Navigation Tabs with Apple iOS Emojis */}
+              <div className="hidden lg:flex items-center gap-1 bg-white/5 p-1 rounded-full border border-white/10 text-xs font-semibold backdrop-blur-md">
+                <button
+                  onClick={() => setActiveTab("menu")}
+                  className={`px-4 py-2 rounded-full transition-all flex items-center gap-2 ${
+                    activeTab === "menu" ? "bg-amber-400 text-black shadow-md shadow-amber-400/20 font-bold" : "text-stone-300 hover:text-white"
+                  }`}
+                >
+                  <IOSEmoji name="pizza" className="w-4 h-4" />
+                  <span>Menu &amp; Specials</span>
+                </button>
+                <button
+                  onClick={() => setActiveTab("catering")}
+                  className={`px-4 py-2 rounded-full transition-all flex items-center gap-2 ${
+                    activeTab === "catering" ? "bg-amber-400 text-black shadow-md shadow-amber-400/20 font-bold" : "text-stone-300 hover:text-white"
+                  }`}
+                >
+                  <IOSEmoji name="party" className="w-4 h-4" />
+                  <span>Catering &amp; Parties</span>
+                </button>
+                <button
+                  onClick={() => setActiveTab("reviews")}
+                  className={`px-4 py-2 rounded-full transition-all flex items-center gap-2 ${
+                    activeTab === "reviews" ? "bg-amber-400 text-black shadow-md shadow-amber-400/20 font-bold" : "text-stone-300 hover:text-white"
+                  }`}
+                >
+                  <IOSEmoji name="star" className="w-4 h-4" />
+                  <span>Reviews</span>
+                </button>
+                <button
+                  onClick={() => setActiveTab("faq")}
+                  className={`px-4 py-2 rounded-full transition-all flex items-center gap-2 ${
+                    activeTab === "faq" ? "bg-amber-400 text-black shadow-md shadow-amber-400/20 font-bold" : "text-stone-300 hover:text-white"
+                  }`}
+                >
+                  <IOSEmoji name="faq" className="w-4 h-4" />
+                  <span>FAQ</span>
+                </button>
+                <button
+                  onClick={() => setActiveTab("visit")}
+                  className={`px-4 py-2 rounded-full transition-all flex items-center gap-2 ${
+                    activeTab === "visit" ? "bg-amber-400 text-black shadow-md shadow-amber-400/20 font-bold" : "text-stone-300 hover:text-white"
+                  }`}
+                >
+                  <IOSEmoji name="pin" className="w-4 h-4" />
+                  <span>QR Codes &amp; Visit</span>
+                </button>
+              </div>
+
+              {/* Quick Action Button */}
+              <div className="flex items-center gap-2">
+                <a
+                  href="tel:9350990071"
+                  className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-stone-900 border border-white/15 text-stone-200 text-xs font-semibold hover:border-amber-400 hover:text-amber-400 transition-colors"
+                >
+                  <PhoneIcon className="w-3.5 h-3.5 text-green-400" />
+                  <span>Call Us</span>
+                </a>
+                <button
+                  onClick={() => setBookingModal({ open: true, service: "General Celebration / Catering" })}
+                  className="px-4 py-2 rounded-full bg-gradient-to-r from-red-500 via-amber-500 to-green-500 text-black font-extrabold text-xs uppercase tracking-wider shadow-[0_0_18px_rgba(234,179,8,0.5)] hover:scale-105 transition-transform"
+                >
+                  Book Event
+                </button>
+              </div>
+            </div>
+
+            {/* Mobile Horizontal Nav Scroll with iOS Emojis */}
+            <div className="lg:hidden flex items-center gap-1.5 px-4 py-2 overflow-x-auto no-scrollbar border-t border-white/5 text-xs font-semibold">
+              <button
+                onClick={() => setActiveTab("menu")}
+                className={`px-3 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1.5 ${
+                  activeTab === "menu" ? "bg-amber-400 text-black font-bold" : "bg-white/5 text-stone-300"
+                }`}
+              >
+                <IOSEmoji name="pizza" className="w-3.5 h-3.5" />
+                <span>Menu</span>
+              </button>
+              <button
+                onClick={() => setActiveTab("catering")}
+                className={`px-3 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1.5 ${
+                  activeTab === "catering" ? "bg-amber-400 text-black font-bold" : "bg-white/5 text-stone-300"
+                }`}
+              >
+                <IOSEmoji name="party" className="w-3.5 h-3.5" />
+                <span>Catering</span>
+              </button>
+              <button
+                onClick={() => setActiveTab("reviews")}
+                className={`px-3 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1.5 ${
+                  activeTab === "reviews" ? "bg-amber-400 text-black font-bold" : "bg-white/5 text-stone-300"
+                }`}
+              >
+                <IOSEmoji name="star" className="w-3.5 h-3.5" />
+                <span>Reviews</span>
+              </button>
+              <button
+                onClick={() => setActiveTab("faq")}
+                className={`px-3 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1.5 ${
+                  activeTab === "faq" ? "bg-amber-400 text-black font-bold" : "bg-white/5 text-stone-300"
+                }`}
+              >
+                <IOSEmoji name="faq" className="w-3.5 h-3.5" />
+                <span>FAQ</span>
+              </button>
+              <button
+                onClick={() => setActiveTab("visit")}
+                className={`px-3 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1.5 ${
+                  activeTab === "visit" ? "bg-amber-400 text-black font-bold" : "bg-white/5 text-stone-300"
+                }`}
+              >
+                <IOSEmoji name="pin" className="w-3.5 h-3.5" />
+                <span>QR Codes</span>
+              </button>
+            </div>
+          </nav>
+
+          {/* Hero Banner Section with Exact Logo */}
+          <header className="max-w-6xl mx-auto px-4 pt-10 pb-6 text-center relative z-10">
+            {/* The Original 4-Circle Logo Badge with 4-color ambient aura */}
+            <div className="flex justify-center mb-5">
+              <div className="relative p-5 rounded-3xl bg-gradient-to-tr from-stone-900/90 via-stone-900/50 to-stone-900/90 border border-amber-400/40 backdrop-blur-xl shadow-[0_0_40px_rgba(234,179,8,0.3)] flex items-center justify-center">
+                {/* 4-color perimeter glow */}
+                <div className="absolute inset-0 rounded-3xl -z-10 opacity-70 blur-xl bg-gradient-to-tr from-red-600 via-amber-400 via-green-500 to-blue-600" />
+                <CCCLogo className="w-24 h-24 sm:w-28 sm:h-28" animated={true} />
+              </div>
+            </div>
+
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-amber-400/40 bg-amber-400/10 text-amber-300 text-xs font-bold tracking-widest uppercase mb-3 shadow-[0_0_15px_rgba(234,179,8,0.25)]">
+              <span>{cafeInfo.hindiName}</span>
+              <span>•</span>
+              <span>{cafeInfo.vibes}</span>
+            </div>
+
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-white mb-3">
+              Chandni Chowk <br className="sm:hidden" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-amber-400 to-green-400">
+                CHEESE CAFÉ
+              </span>
+            </h1>
+
+            <p className="text-stone-300 text-sm sm:text-base italic max-w-2xl mx-auto mb-6 font-serif">
+              &ldquo;Delicious Food. Perfect Service. Memorable Moments. Where 100% Vegetarian Flavors Meet Retro Hippie Vibes.&rdquo;
+            </p>
+
+            {/* Quick Badges with iOS Emojis & 4 Logo Colors */}
+            <div className="flex flex-wrap items-center justify-center gap-3 text-xs">
+              <span className="flex items-center gap-1.5 bg-stone-900/80 border border-red-500/40 px-3.5 py-1.5 rounded-full text-stone-200 shadow-[0_0_12px_rgba(239,68,68,0.2)]">
+                <IOSEmoji name="burger" className="w-3.5 h-3.5" />
+                <span>No Mayo in Rolls</span>
+              </span>
+              <span className="flex items-center gap-1.5 bg-stone-900/80 border border-green-500/40 px-3.5 py-1.5 rounded-full text-stone-200 shadow-[0_0_12px_rgba(34,197,94,0.2)]">
+                <IOSEmoji name="pizza" className="w-3.5 h-3.5" />
+                <span>100% Pure Vegetarian</span>
+              </span>
+              <span className="flex items-center gap-1.5 bg-stone-900/80 border border-blue-500/40 px-3.5 py-1.5 rounded-full text-stone-200 shadow-[0_0_12px_rgba(59,130,246,0.2)]">
+                <IOSEmoji name="fire" className="w-3.5 h-3.5" />
+                <span>Smoky Mocktails Live</span>
+              </span>
+              <span className="flex items-center gap-1.5 bg-stone-900/80 border border-amber-500/40 px-3.5 py-1.5 rounded-full text-stone-200 shadow-[0_0_12px_rgba(234,179,8,0.2)]">
+                <IOSEmoji name="beer" className="w-3.5 h-3.5" />
+                <span>Fruit Beer @₹60</span>
+              </span>
+            </div>
+          </header>
+
+          {/* TAB 1: MENU & 3D COVERFLOW SECTION */}
+          {activeTab === "menu" && (
+            <main>
+              {/* 3D Coverflow Showcase */}
+              <div className="w-full">
+                <CoverFlowCarousel
+                  items={carouselDishes}
+                  sectionLabel="SIGNATURE BEST SELLERS"
+                  autoplay={true}
+                  autoplayDelay={4500}
+                />
+              </div>
+
+              {/* Full Digital Menu Section */}
+              <section className="max-w-6xl mx-auto px-4 py-16">
+                <div className="text-center mb-10">
+                  <div className="flex items-center justify-center gap-3 mb-2">
+                    <span className="w-8 h-[2px] bg-gradient-to-r from-transparent to-red-500" />
+                    <h2 className="text-xs font-black tracking-[0.3em] uppercase text-amber-400">
+                      DIGITAL CAFÉ MENU
+                    </h2>
+                    <span className="w-8 h-[2px] bg-gradient-to-l from-transparent to-green-500" />
+                  </div>
+                  <h3 className="text-3xl sm:text-4xl font-extrabold uppercase tracking-wide text-white">
+                    Prepared Fresh with Zero Compromise
+                  </h3>
+                  <p className="text-xs text-stone-400 mt-1">
+                    Bhatia Building, Near ICICI Bank, Yamunanagar • Dine-In, Takeaway &amp; Delivery
+                  </p>
+                </div>
+
+                {/* Category Filter Pills */}
+                <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar scroll-smooth">
+                  {allCategoryNames.map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setSelectedCategory(cat)}
+                      className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-200 border ${
+                        selectedCategory === cat
+                          ? "bg-amber-400 text-stone-950 border-amber-400 shadow-md shadow-amber-400/30 font-bold scale-105"
+                          : "bg-stone-900/80 text-stone-300 border-white/10 hover:border-amber-400/50"
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Menu Items Grid */}
+                <div className="space-y-10">
+                  {filteredCategories.map((cat, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-[#14100e]/90 border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-md relative overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
+                    >
+                      {/* Top 4-color accent line */}
+                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 via-amber-400 via-green-500 to-blue-500" />
+
+                      <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-white/10 pb-4 mb-6">
+                        <div>
+                          <h4 className="text-xl font-black uppercase tracking-wide text-white flex items-center gap-2">
+                            <UtensilsIcon className="w-4 h-4 text-amber-400" />
+                            {cat.categoryName}
+                          </h4>
+                          {cat.subtitle && (
+                            <p className="text-xs text-stone-400 italic mt-0.5">{cat.subtitle}</p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {cat.items.map((item, itemIdx) => (
+                          <div
+                            key={itemIdx}
+                            className="p-4 rounded-xl bg-stone-900/70 border border-white/5 hover:border-amber-400/40 transition-all flex flex-col justify-between tilt-card backdrop-blur-sm"
+                          >
+                            <div>
+                              <div className="flex items-start justify-between gap-2 mb-1.5">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <h5 className="font-bold text-sm text-stone-100">{item.name}</h5>
+                                  {item.isSignature && (
+                                    <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-black bg-amber-400 px-2 py-0.5 rounded-full">
+                                      <IOSEmoji name="fire" className="w-3 h-3" />
+                                      <span>Signature</span>
+                                    </span>
+                                  )}
+                                  {item.tag && !item.isSignature && (
+                                    <span className="text-[10px] uppercase font-semibold text-amber-300 bg-amber-400/15 px-2 py-0.5 rounded-full border border-amber-400/30">
+                                      {item.tag}
+                                    </span>
+                                  )}
+                                </div>
+                                <span className="text-sm font-black text-amber-400 whitespace-nowrap bg-amber-400/10 px-2.5 py-0.5 rounded-full border border-amber-400/30">
+                                  {typeof item.price === "number" ? `₹${item.price}` : `₹${item.price}`}
+                                </span>
+                              </div>
+                              {item.description && (
+                                <p className="text-xs text-stone-400 leading-relaxed mt-1">
+                                  {item.description}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </main>
+          )}
+
+          {/* TAB 2: CATERING & EVENTS PAGE */}
+          {activeTab === "catering" && (
+            <section className="max-w-6xl mx-auto px-4 py-10">
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-red-500/40 bg-red-500/10 text-red-400 text-xs font-bold uppercase tracking-widest mb-3">
+                  <IOSEmoji name="sparkles" className="w-3.5 h-3.5" />
+                  <span>We Handle The Food, You Enjoy The Moments</span>
+                </div>
+                <h2 className="text-3xl sm:text-5xl font-black uppercase text-white mb-3">
+                  Catering &amp; Party <span className="text-amber-400">Services</span>
+                </h2>
+                <p className="text-stone-300 text-sm max-w-xl mx-auto italic font-serif">
+                  &ldquo;Whether it&apos;s a crazy birthday, an elegant wedding, a chill house gathering, or a glamorous kitty party — we bring the food &amp; vibes!&rdquo;
+                </p>
+              </div>
+
+              {/* 4 Poster Showcase Cards with 3D Tilt */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                {cateringServices.map((service, idx) => (
+                  <div
+                    key={service.id}
+                    className="bg-[#14100e]/90 border border-white/10 rounded-2xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.6)] tilt-card flex flex-col justify-between backdrop-blur-md"
+                  >
+                    <div className="relative group cursor-pointer" onClick={() => setSelectedPoster(service.poster)}>
+                      <img
+                        src={service.poster}
+                        alt={service.title}
+                        className="w-full h-[380px] object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#14100e] via-transparent to-black/30" />
+                      <div className="absolute top-4 right-4 bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-full text-[11px] font-bold text-amber-300 border border-amber-400/40 flex items-center gap-1.5">
+                        <IOSEmoji name="search" className="w-3.5 h-3.5" />
+                        <span>Click to Zoom Poster</span>
+                      </div>
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <span 
+                          className="inline-block text-[11px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full mb-1 text-black font-extrabold"
+                          style={{ backgroundColor: service.color }}
+                        >
+                          {service.title}
+                        </span>
+                        <h3 className="text-2xl font-black uppercase text-white leading-tight drop-shadow-md">
+                          {service.tagline}
+                        </h3>
+                      </div>
+                    </div>
+
+                    <div className="p-6">
+                      <p className="text-xs text-stone-300 italic mb-4 font-serif border-l-2 pl-3 border-amber-400">
+                        &ldquo;{service.quote}&rdquo;
+                      </p>
+
+                      <div className="space-y-2 mb-6">
+                        {service.features.map((feat, fIdx) => (
+                          <div key={fIdx} className="flex items-center gap-2 text-xs text-stone-200">
+                            <CheckIcon className="w-3.5 h-3.5 shrink-0" />
+                            <span>{feat}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <button
+                        onClick={() => setBookingModal({ open: true, service: service.title })}
+                        className="w-full py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider bg-stone-900 border border-white/20 hover:border-amber-400 hover:text-amber-400 text-white transition-all shadow-md flex items-center justify-center gap-2"
+                      >
+                        <span>Book {service.title}</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Catering Inquiry Banner with 4 Logo Colors */}
+              <div className="p-8 rounded-3xl bg-gradient-to-r from-red-950/50 via-stone-900/80 to-blue-950/50 border border-amber-400/30 text-center relative overflow-hidden shadow-[0_10px_35px_rgba(234,179,8,0.2)] backdrop-blur-md">
+                <CCCLogo className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3" />
+                <h3 className="text-2xl sm:text-3xl font-black uppercase text-white mb-2">
+                  Plan Your Event with Chandni Chowk Cheese Café
+                </h3>
+                <p className="text-stone-300 text-xs sm:text-sm max-w-xl mx-auto mb-6">
+                  Live counters, bespoke food styling, smoking mocktails, music setups, and complete host relief.
+                </p>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <a
+                    href="tel:9350990071"
+                    className="px-6 py-3 rounded-full bg-amber-400 text-stone-950 font-black text-xs uppercase tracking-wider shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+                  >
+                    <PhoneIcon className="w-4 h-4 text-black" />
+                    <span>Call 9350-990071</span>
+                  </a>
+                  <a
+                    href="tel:8901484042"
+                    className="px-6 py-3 rounded-full bg-stone-800 border border-white/20 text-white font-black text-xs uppercase tracking-wider hover:border-amber-400 transition-colors flex items-center gap-2"
+                  >
+                    <PhoneIcon className="w-4 h-4 text-amber-400" />
+                    <span>Call 8901-484042</span>
+                  </a>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* TAB 3: CUSTOMER REVIEWS (3D EFFECT CARDS) */}
+          {activeTab === "reviews" && (
+            <section className="max-w-6xl mx-auto px-4 py-12">
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-green-500/40 bg-green-500/10 text-green-400 text-xs font-bold uppercase tracking-widest mb-3">
+                  <IOSEmoji name="star" className="w-3.5 h-3.5" />
+                  <span>Loved Across Yamunanagar &amp; Jagadhri</span>
+                </div>
+                <h2 className="text-3xl sm:text-5xl font-black uppercase text-white mb-3">
+                  Customer <span className="text-amber-400">Reviews</span>
+                </h2>
+                <p className="text-stone-400 text-xs sm:text-sm max-w-lg mx-auto">
+                  Real experiences from families, foodies, kitty parties, and celebration hosts.
+                </p>
+              </div>
+
+              {/* 3D Review Cards Grid with Apple iOS Stars */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {reviews.map((rev, idx) => {
+                  const borderColors = [
+                    "hover:border-red-500 shadow-red-500/10",
+                    "hover:border-green-500 shadow-green-500/10",
+                    "hover:border-blue-500 shadow-blue-500/10",
+                    "hover:border-amber-400 shadow-amber-400/10",
+                    "hover:border-purple-500 shadow-purple-500/10",
+                  ];
+                  return (
+                    <div
+                      key={idx}
+                      className={`p-6 rounded-2xl bg-[#14100e]/90 border border-white/10 ${borderColors[idx % borderColors.length]} transition-all duration-300 tilt-card flex flex-col justify-between shadow-[0_10px_25px_rgba(0,0,0,0.5)] backdrop-blur-md`}
+                    >
+                      <div>
+                        {/* Apple iOS Rating Stars */}
+                        <div className="flex items-center gap-1 mb-3">
+                          {[...Array(rev.rating)].map((_, sIdx) => (
+                            <IOSEmoji key={sIdx} name="star" className="w-4 h-4" />
+                          ))}
+                          <span className="text-[11px] font-bold text-amber-300 ml-1.5">5.0</span>
+                        </div>
+
+                        {/* Dish Tag */}
+                        <div className="text-[11px] font-bold uppercase tracking-wider text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded-full inline-block mb-3 border border-amber-400/30">
+                          {rev.dish}
+                        </div>
+
+                        {/* Review Text */}
+                        <p className="text-xs text-stone-300 italic leading-relaxed mb-6 font-serif">
+                          &ldquo;{rev.review}&rdquo;
+                        </p>
+                      </div>
+
+                      {/* Author Info */}
+                      <div className="flex items-center gap-3 border-t border-white/10 pt-4">
+                        <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-400 to-red-500 flex items-center justify-center font-black text-black text-sm">
+                          {rev.name[0]}
+                        </div>
+                        <div>
+                          <h4 className="text-xs font-bold text-white">{rev.name}</h4>
+                          <span className="text-[10px] text-stone-400 flex items-center gap-1">
+                            <MapPinIcon className="w-3 h-3 text-amber-400" />
+                            {rev.location}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
+          {/* TAB 4: INTERACTIVE FAQ SECTION */}
+          {activeTab === "faq" && (
+            <section className="max-w-4xl mx-auto px-4 py-12">
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-500/40 bg-blue-500/10 text-blue-400 text-xs font-bold uppercase tracking-widest mb-3">
+                  <IOSEmoji name="faq" className="w-3.5 h-3.5" />
+                  <span>Frequently Asked Questions</span>
+                </div>
+                <h2 className="text-3xl sm:text-5xl font-black uppercase text-white mb-3">
+                  Have <span className="text-amber-400">Questions?</span>
+                </h2>
+                <p className="text-stone-400 text-xs sm:text-sm">
+                  Everything you need to know about our food, ingredients, catering &amp; visits.
+                </p>
+              </div>
+
+              {/* Accordion List */}
+              <div className="space-y-4">
+                {faqs.map((faq, idx) => {
+                  const isOpen = openFaq === idx;
+                  return (
+                    <div
+                      key={idx}
+                      className={`rounded-2xl border transition-all duration-300 overflow-hidden backdrop-blur-md ${
+                        isOpen
+                          ? "bg-[#181311] border-amber-400/50 shadow-[0_0_20px_rgba(234,179,8,0.2)]"
+                          : "bg-[#14100e]/90 border-white/10 hover:border-white/20"
+                      }`}
+                    >
+                      <button
+                        onClick={() => setOpenFaq(isOpen ? null : idx)}
+                        className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-white"
+                      >
+                        <span className="flex items-center gap-3">
+                          <span className="w-6 h-6 rounded-full bg-amber-400/15 border border-amber-400/40 text-amber-400 flex items-center justify-center text-xs shrink-0">
+                            Q{idx + 1}
+                          </span>
+                          {faq.q}
+                        </span>
+                        <span className={`transform transition-transform duration-200 text-amber-400 ${isOpen ? "rotate-180" : ""}`}>
+                          ▼
+                        </span>
+                      </button>
+                      {isOpen && (
+                        <div className="px-5 pb-5 text-xs sm:text-sm text-stone-300 leading-relaxed border-t border-white/5 pt-3">
+                          {faq.a}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
+          {/* TAB 5: QR CODES & LOCATION SECTION */}
+          {activeTab === "visit" && (
+            <section className="max-w-5xl mx-auto px-4 py-12">
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-400/40 bg-amber-400/10 text-amber-300 text-xs font-bold uppercase tracking-widest mb-3">
+                  <IOSEmoji name="pin" className="w-3.5 h-3.5" />
+                  <span>Scan &amp; Connect Instantly</span>
+                </div>
+                <h2 className="text-3xl sm:text-5xl font-black uppercase text-white mb-3">
+                  Visit Us &amp; <span className="text-amber-400">Scan QR Codes</span>
+                </h2>
+                <p className="text-stone-300 text-xs sm:text-sm max-w-md mx-auto">
+                  Find our café directly in Yamunanagar or follow our latest offers &amp; food drops on Instagram.
+                </p>
+              </div>
+
+              {/* Two QR Cards Grid with 3D Tilt */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                {/* Location QR Code */}
+                <div className="p-8 rounded-3xl bg-[#14100e]/90 border border-red-500/40 text-center tilt-card shadow-[0_15px_35px_rgba(239,68,68,0.2)] flex flex-col items-center justify-between backdrop-blur-md">
+                  <div>
+                    <span className="text-xs uppercase font-extrabold tracking-widest text-red-400 bg-red-500/10 px-3 py-1 rounded-full border border-red-500/30 inline-flex items-center gap-1.5 mb-4">
+                      <IOSEmoji name="pin" className="w-3.5 h-3.5" />
+                      <span>Google Maps Navigation</span>
+                    </span>
+                    <h3 className="text-xl font-bold uppercase text-white mb-2">Location QR Code</h3>
+                    <p className="text-xs text-stone-400 mb-6">
+                      Scan with your phone camera to open live directions to Bhatia Building, Near ICICI Bank.
+                    </p>
+                    <div className="p-4 bg-white rounded-2xl shadow-xl inline-block mb-6 border-2 border-red-500">
+                      <img
+                        src="/public/images/location-qr.jpg"
+                        alt="Chandni Chowk Cheese Cafe Location QR"
+                        className="w-52 h-52 object-contain"
+                      />
+                    </div>
+                  </div>
+                  <div className="text-xs text-stone-300">
+                    <p className="font-bold text-amber-400 flex items-center justify-center gap-1">
+                      <IOSEmoji name="pin" className="w-3.5 h-3.5" />
+                      <span>{cafeInfo.location}</span>
+                    </p>
+                  </div>
+                </div>
+
+                {/* Instagram QR Code */}
+                <div className="p-8 rounded-3xl bg-[#14100e]/90 border border-blue-500/40 text-center tilt-card shadow-[0_15px_35px_rgba(59,130,246,0.2)] flex flex-col items-center justify-between backdrop-blur-md">
+                  <div>
+                    <span className="text-xs uppercase font-extrabold tracking-widest text-blue-400 bg-blue-500/10 px-3 py-1 rounded-full border border-blue-500/30 inline-flex items-center gap-1.5 mb-4">
+                      <IOSEmoji name="sparkles" className="w-3.5 h-3.5" />
+                      <span>Official Instagram Page</span>
+                    </span>
+                    <h3 className="text-xl font-bold uppercase text-white mb-2">Instagram QR Code</h3>
+                    <p className="text-xs text-stone-400 mb-6">
+                      Scan to view daily reels, party photos, reviews, and tag @chandni.chowk.cheese.cafe!
+                    </p>
+                    <div className="p-4 bg-white rounded-2xl shadow-xl inline-block mb-6 border-2 border-blue-500">
+                      <img
+                        src="/public/images/instagram-qr.jpg"
+                        alt="Chandni Chowk Cheese Cafe Instagram QR"
+                        className="w-52 h-52 object-contain"
+                      />
+                    </div>
+                  </div>
+                  <div className="text-xs text-stone-300">
+                    <p className="font-bold text-blue-400">{cafeInfo.instagram}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact Bar */}
+              <div className="p-6 rounded-2xl bg-stone-900/70 border border-white/10 text-center flex flex-col sm:flex-row items-center justify-around gap-4 text-xs backdrop-blur-md">
+                <div className="flex items-center gap-2">
+                  <IOSEmoji name="pin" className="w-4 h-4" />
+                  <span>{cafeInfo.location}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <PhoneIcon className="w-4 h-4 text-green-400" />
+                  <span>Call: {cafeInfo.contacts.join(" | ")}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <InstagramIcon className="w-4 h-4 text-pink-400" />
+                  <span>{cafeInfo.instagram}</span>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Quick Bottom Floating Nav on Long Pages */}
+          <div className="max-w-xl mx-auto px-4 py-8 flex items-center justify-center gap-3 text-xs text-stone-400">
+            <span>Jump to:</span>
+            <button onClick={() => setActiveTab("menu")} className="hover:text-amber-400 underline cursor-pointer">Menu</button>
+            <span>•</span>
+            <button onClick={() => setActiveTab("catering")} className="hover:text-amber-400 underline cursor-pointer">Catering</button>
+            <span>•</span>
+            <button onClick={() => setActiveTab("reviews")} className="hover:text-amber-400 underline cursor-pointer">Reviews</button>
+            <span>•</span>
+            <button onClick={() => setActiveTab("faq")} className="hover:text-amber-400 underline cursor-pointer">FAQ</button>
+            <span>•</span>
+            <button onClick={() => setActiveTab("visit")} className="hover:text-amber-400 underline cursor-pointer">QR Codes</button>
+          </div>
+
+          {/* Poster Lightbox Modal */}
+          {selectedPoster && (
+            <div 
+              className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 cursor-pointer"
+              onClick={() => setSelectedPoster(null)}
+            >
+              <div className="relative max-w-2xl max-h-[90vh] bg-stone-950 p-2 rounded-2xl border border-amber-400/40">
+                <button
+                  onClick={() => setSelectedPoster(null)}
+                  className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-amber-400 text-black font-black text-xs flex items-center justify-center shadow-lg hover:scale-110"
+                >
+                  ✕
+                </button>
+                <img
+                  src={selectedPoster}
+                  alt="Poster preview"
+                  className="max-h-[82vh] w-auto mx-auto object-contain rounded-xl"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Booking Inquiry Modal */}
+          {bookingModal.open && (
+            <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+              <div className="bg-[#14100e] border border-amber-400/50 p-6 sm:p-8 rounded-3xl max-w-md w-full shadow-[0_20px_50px_rgba(0,0,0,0.9)] relative">
+                <button
+                  onClick={() => setBookingModal({ open: false, service: "" })}
+                  className="absolute top-4 right-4 text-stone-400 hover:text-white text-lg font-bold"
+                >
+                  ✕
+                </button>
+
+                <div className="flex items-center gap-2 mb-2">
+                  <CCCLogo className="w-8 h-8" />
+                  <span className="text-xs font-bold uppercase tracking-wider text-amber-400">Event Inquiry</span>
+                </div>
+
+                <h3 className="text-xl font-black uppercase text-white mb-1">
+                  Book {bookingModal.service}
+                </h3>
+                <p className="text-xs text-stone-400 mb-6">
+                  Call our team directly or send your requirements for customized menus &amp; setup details.
+                </p>
+
+                <div className="space-y-3 mb-6">
+                  <a
+                    href="tel:9350990071"
+                    className="w-full py-3 rounded-xl bg-amber-400 text-black font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md hover:bg-amber-300"
+                  >
+                    <PhoneIcon className="w-4 h-4 text-black" />
+                    <span>Call Manager: 9350-990071</span>
+                  </a>
+                  <a
+                    href="tel:8901484042"
+                    className="w-full py-3 rounded-xl bg-stone-900 border border-white/20 text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:border-amber-400"
+                  >
+                    <PhoneIcon className="w-4 h-4 text-amber-400" />
+                    <span>Alternate: 8901-484042</span>
+                  </a>
+                </div>
+
+                <div className="text-[11px] text-stone-400 text-center border-t border-white/10 pt-4 flex items-center justify-center gap-1.5">
+                  <IOSEmoji name="pin" className="w-3.5 h-3.5" />
+                  <span>Bhatia Building, Near ICICI Bank, Yamunanagar</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Footer Section with Exact Logo */}
+          <footer className="w-full border-t border-white/10 bg-[#0b0908]/90 py-12 px-4 text-center mt-12 relative z-10 backdrop-blur-md">
+            <div className="max-w-4xl mx-auto flex flex-col items-center gap-4">
+              <CCCLogo className="w-14 h-14" animated={true} />
+              
+              <div className="text-xl font-black uppercase tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-amber-400 to-green-500">
+                Chandni Chowk Cheese Café
+              </div>
+              
+              <p className="text-xs text-stone-300 max-w-md italic font-serif">
+                &ldquo;{cafeInfo.slogan}&rdquo;
+              </p>
+              
+              <p className="text-xs text-stone-400">
+                {cafeInfo.location} • Phone: {cafeInfo.contacts.join(" | ")}
+              </p>
+
+              <div className="flex items-center gap-4 text-xs font-semibold text-stone-400">
+                <span className="text-red-400">#HealthAndTaste</span>
+                <span>•</span>
+                <span className="text-amber-400">#GoodVibes</span>
+                <span>•</span>
+                <span className="text-green-400">#NoMayo</span>
+                <span>•</span>
+                <span className="text-blue-400">#TheBurningDrinks</span>
+              </div>
+
+              <div className="text-[11px] text-stone-500 mt-2">
+                © {new Date().getFullYear()} Chandni Chowk Cheese Café (CCC). All Rights Reserved.
+              </div>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>
